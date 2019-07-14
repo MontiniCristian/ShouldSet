@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ShoulDemo</string>
+    <string name="map_bottom_navigation">Map</string>
+    <string name="settings_bottom_navigation">Settings</string>
+</resources>

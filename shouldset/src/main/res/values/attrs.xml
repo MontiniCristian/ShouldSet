@@ -1,0 +1,12 @@
+<resources>
+    <declare-styleable name="ShouldSetScreen">
+        <attr name="fit_content" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="ShouldSetCheckBoxPreference">
+        <!--<attr name="icon" format="integer" />-->
+        <attr name="backgroundColor" format="color" />
+        <attr name="textColor" format="color" />
+        <attr name="key" format="string" />
+    </declare-styleable>
+</resources>
