@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.cristian.shouldset.R
 
-class ShouldSetBottomSheet : LinearLayout, ShouldSetView {
+class ShouldSetBottomSheet : LinearLayout {
     var backgroundColor: Int? = null
         set(value) {
             field = value

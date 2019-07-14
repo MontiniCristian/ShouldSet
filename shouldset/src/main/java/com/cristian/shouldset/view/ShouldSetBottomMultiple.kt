@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.cristian.shouldset.R
 
-class ShouldSetBottomMultiple : LinearLayout, ShouldSetView {
+class ShouldSetBottomMultiple : LinearLayout {
 
     private var mOnClickListener: (() -> Unit)? = null
 

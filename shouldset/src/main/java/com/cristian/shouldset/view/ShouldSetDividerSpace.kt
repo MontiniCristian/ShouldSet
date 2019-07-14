@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.LinearLayout
 import com.cristian.shouldset.R
 
-class ShouldSetDividerSpace : LinearLayout, ShouldSetView {
+class ShouldSetDividerSpace : LinearLayout {
 
     var color: Int? = null
         set(value) {

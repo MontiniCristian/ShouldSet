@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.FrameLayout
 import com.cristian.shouldset.R
 
-class ShouldSetDividerLine : FrameLayout, ShouldSetView {
+class ShouldSetDividerLine : FrameLayout {
 
     var color: Int? = null
         set(value) {

@@ -10,7 +10,7 @@ import com.cristian.shouldset.R
 import com.cristian.shouldset.manager.ShouldManager
 import io.reactivex.disposables.Disposable
 
-class ShouldSetBottomSingle : LinearLayout, ShouldSetView {
+class ShouldSetBottomSingle : LinearLayout {
 
     private var mValueSubscription: Disposable? = null
 

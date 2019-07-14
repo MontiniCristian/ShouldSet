@@ -12,7 +12,6 @@ class ShouldSetScreen : LinearLayout {
 
 
     private lateinit var mLayout: LinearLayout
-    private var mPreferences: MutableList<ShouldSetView>? = null
     private lateinit var bottomSheetLayout: LinearLayout
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     private val multipleList = mutableListOf<ShouldSetBottomMultiple>()

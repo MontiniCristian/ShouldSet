@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.cristian.shouldset.R
 
-class ShouldSetCategory : LinearLayout, ShouldSetView {
+class ShouldSetCategory : LinearLayout {
 
     private var mTitleTextView: TextView? = null
 
