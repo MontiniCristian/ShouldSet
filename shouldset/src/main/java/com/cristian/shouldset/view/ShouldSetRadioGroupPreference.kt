@@ -62,8 +62,11 @@ class ShouldSetRadioGroupPreference : LinearLayout, ShouldSetPreference {
     var backgroundColor: Int? = null
         set(value) {
             field = value
-            radioButtons.forEach {
-                it.backgroundColor = value
+            if (value != null) {
+                this.background = resources.getDrawable(value, context.theme)
+                radioButtons.forEach {
+                    it.backgroundColor = value
+                }
             }
         }
 

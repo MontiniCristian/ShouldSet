@@ -10,13 +10,14 @@ import com.cristian.shouldset.R
 import com.cristian.shouldset.manager.ShouldManager
 import io.reactivex.disposables.Disposable
 
-class ShouldSetBottomSingle : LinearLayout {
+class ShouldSetBottomRadioGroupPreference : LinearLayout {
 
     private var mValueSubscription: Disposable? = null
 
     private var mTitleTextView: TextView? = null
     private var mValueTextView: TextView? = null
     private var mOnClickListener: (() -> Unit)? = null
+    var radioButtonGroupPreference: ShouldSetRadioGroupPreference? = null
 
     private val manager: ShouldManager = ShouldManager
 
@@ -28,13 +29,10 @@ class ShouldSetBottomSingle : LinearLayout {
         set(value) {
             field = value
             if (value != null) {
-                radioButtonGroupPreference.backgroundColor = value
-                mTitleTextView?.background = resources.getDrawable(value, context.theme)
                 this.background = resources.getDrawable(value, context.theme)
+                radioButtonGroupPreference?.backgroundColor = value
             }
         }
-
-    lateinit var radioButtonGroupPreference: ShouldSetRadioGroupPreference
 
     var title: String? = null
         set(value) {
@@ -47,7 +45,7 @@ class ShouldSetBottomSingle : LinearLayout {
             field = value
             if (value != null) {
                 mTitleTextView?.setTextColor(resources.getColor(value, context.theme))
-                radioButtonGroupPreference.textColor = value
+                radioButtonGroupPreference?.textColor = value
             }
 
         }
@@ -63,7 +61,7 @@ class ShouldSetBottomSingle : LinearLayout {
     var valueLabelPair: (Map<String, String>)? = null
         set(value) {
             field = value
-            radioButtonGroupPreference.valueLabelPair = valueLabelPair
+            radioButtonGroupPreference?.valueLabelPair = valueLabelPair
             mValueSubscription?.dispose()
             mValueSubscription = manager.getStringAsBehaviorSubject(
                 key ?: throw NullDefaultValueException(this),
@@ -76,7 +74,7 @@ class ShouldSetBottomSingle : LinearLayout {
     var dividerColor: Int? = null
         set(value) {
             field = value
-            radioButtonGroupPreference.dividerColor = value
+            radioButtonGroupPreference?.dividerColor = value
         }
 
     constructor(key: String, defaultValueKey: String, context: Context) : super(context) {
@@ -100,7 +98,7 @@ class ShouldSetBottomSingle : LinearLayout {
     }
 
     private fun onInit() {
-        View.inflate(context, R.layout.shouldset_preference_single, this)
+        View.inflate(context, R.layout.shouldset_preference_bottom_checkbox_group, this)
         mTitleTextView = findViewById(R.id.shouldSetSingePreferenceTitle)
         mValueTextView = findViewById(R.id.shouldSetSingePreferenceValue)
         radioButtonGroupPreference = ShouldSetRadioGroupPreference(

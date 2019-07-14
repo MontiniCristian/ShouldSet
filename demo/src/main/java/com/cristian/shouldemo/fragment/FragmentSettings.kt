@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.cristian.shouldemo.R
+import com.cristian.shouldemo.fragment.preference.MyCategory
 
 import kotlinx.android.synthetic.main.fragment_settings.*
 
@@ -18,17 +19,17 @@ class FragmentSettings : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        myShouldSetScreen.backgroundColor = R.color.colorPrimaryDark
 
-        myShouldSetScreen.build {
-
-            backgroundColor = R.color.colorPrimaryDark
+        myShouldSetScreen.configure {
 
             categoryTitle {
                 title = "Social Skills"
                 textColor = R.color.colorSecondary
+                backgroundColor = R.color.colorPrimaryDark
             }
 
-            checkBoxPreference("areGreetingsHappening") {
+           checkBoxPreference("areGreetingsHappening") {
                 backgroundColor = R.color.colorPrimary
                 textColor = android.R.color.white
                 setOnValueChangeListener {
@@ -44,7 +45,7 @@ class FragmentSettings : Fragment() {
                 textColor = R.color.colorSecondary
             }
 
-            bottomMultiple {
+            bottomRadioGroupPreference {
                 keyLabelPair = hashMapOf(
                     "isSomething" to "Something",
                     "isMagic" to "Magic",
@@ -75,7 +76,7 @@ class FragmentSettings : Fragment() {
                 color = R.color.colorPrimaryDark
             }
 
-            bottomSingle("magic_kind", "duperMagic") {
+            bottomCheckBoxGroupPreference("magic_kind", "duperMagic") {
                 backgroundColor = R.color.colorPrimary
                 textColor = android.R.color.white
                 title = "Magic kind"

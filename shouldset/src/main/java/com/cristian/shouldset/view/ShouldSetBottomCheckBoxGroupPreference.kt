@@ -7,11 +7,16 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.cristian.shouldset.R
 
-class ShouldSetBottomSheet : LinearLayout {
+class ShouldSetBottomCheckBoxGroupPreference : LinearLayout {
+
+    private var mOnClickListener: (() -> Unit)? = null
+
     var backgroundColor: Int? = null
         set(value) {
             field = value
-            if (value != null) mTitleTextView?.background = resources.getDrawable(value, context.theme)
+            if (value != null) {
+                this.background = resources.getDrawable(value, context.theme)
+            }
         }
 
     var title: String? = null
@@ -25,6 +30,11 @@ class ShouldSetBottomSheet : LinearLayout {
             field = value
             if (value != null) mTitleTextView?.setTextColor(resources.getColor(value, context.theme))
         }
+
+    var dividerColor: Int? = null
+
+    var keyLabelPair: (Map<String, String>)? = null
+
 
     private var mTitleTextView: TextView? = null
 
@@ -41,6 +51,16 @@ class ShouldSetBottomSheet : LinearLayout {
     }
 
     private fun onInit() {
-        View.inflate(context, R.layout.shouldset_bottom_sheet, this)
+        View.inflate(context, R.layout.shouldset_preference_bottom_radio_group, this)
+        mTitleTextView = findViewById(R.id.shouldSetMultiplePreferenceTitle)
+        setOnClickListener {
+            mOnClickListener?.invoke()
+        }
+
+        elevation = 8.0F
+    }
+
+    fun setOnSelectedListener(action: () -> Unit) {
+        mOnClickListener = action
     }
 }
