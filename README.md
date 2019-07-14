@@ -1,4 +1,4 @@
-![](https://img.shields.io/static/v1.svg?url=<google.com>&label=Release&logo=git&color=red&style=popout&message=alpha-0.0.1) ![](https://img.shields.io/static/v1.svg?url=<google.com>&logo=android&label=minSdkVersion&color=green&style=popout&message=23) 
+![](https://img.shields.io/static/v1.svg?url=<google.com>&label=Release&logo=git&color=green&style=popout&message=v0.1.0) ![](https://img.shields.io/static/v1.svg?url=<google.com>&logo=android&label=minSdkVersion&color=green&style=popout&message=23) 
 
 <a href="https://t.me/joinchat/EibedxVyHBjVSgZtYhTFUw">![](https://img.shields.io/static/v1.svg?url=<google.com>&logo=telegram&label=ShouldSet&color=blue&style=popout&message=@th4tpool)</a>
 
@@ -26,7 +26,7 @@ allprojects {
 Add the ShouldSet dependency in your app gradle and sync the project:
 ```groovy
 dependencies {
-    implementation ''
+      implementation 'com.github.MontiniCristian:ShouldSet:v0.1.0'
 }
 ```
 
