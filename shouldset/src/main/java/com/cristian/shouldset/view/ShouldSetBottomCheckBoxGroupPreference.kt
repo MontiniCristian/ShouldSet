@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.cristian.shouldset.R
 
-class ShouldSetBottomMultiple : LinearLayout, ShouldSetView {
+class ShouldSetBottomCheckBoxGroupPreference : LinearLayout {
 
     private var mOnClickListener: (() -> Unit)? = null
 
@@ -15,7 +15,6 @@ class ShouldSetBottomMultiple : LinearLayout, ShouldSetView {
         set(value) {
             field = value
             if (value != null) {
-                mTitleTextView?.background = resources.getDrawable(value, context.theme)
                 this.background = resources.getDrawable(value, context.theme)
             }
         }
@@ -52,7 +51,7 @@ class ShouldSetBottomMultiple : LinearLayout, ShouldSetView {
     }
 
     private fun onInit() {
-        View.inflate(context, R.layout.shouldset_preference_multiple, this)
+        View.inflate(context, R.layout.shouldset_preference_bottom_radio_group, this)
         mTitleTextView = findViewById(R.id.shouldSetMultiplePreferenceTitle)
         setOnClickListener {
             mOnClickListener?.invoke()

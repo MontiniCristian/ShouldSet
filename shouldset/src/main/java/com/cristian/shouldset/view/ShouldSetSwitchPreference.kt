@@ -29,7 +29,6 @@ class ShouldSetSwitchPreference : LinearLayout, ShouldSetPreference {
             field = value
             if (value != null) {
                 this.background = resources.getDrawable(value, context.theme)
-                mSwitchPreferenceTextView.background = resources.getDrawable(value, context.theme)
             }
         }
 

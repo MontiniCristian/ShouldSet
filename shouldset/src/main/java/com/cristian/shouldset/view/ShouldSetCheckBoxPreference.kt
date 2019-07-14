@@ -29,7 +29,6 @@ class ShouldSetCheckBoxPreference : LinearLayout, ShouldSetPreference {
             field = value
             if (value != null) {
                 this.background = resources.getDrawable(value, context.theme)
-                mCheckBoxPreferenceTextView.background = resources.getDrawable(value, context.theme)
             }
         }
 

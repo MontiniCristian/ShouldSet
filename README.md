@@ -97,14 +97,13 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         
         myShouldSetScreen.build {
 
-            backgroundColor = R.color.colorPrimaryDark
-
             categoryTitle {
                 title = "Social Skills"
-                textColor =  R.color.colorSecondary
+                textColor = R.color.colorSecondary
+                backgroundColor = R.color.colorPrimaryDark
             }
 
-            checkBoxPreference("areGreetingsHappening") {
+           checkBoxPreference("areGreetingsHappening") {
                 backgroundColor = R.color.colorPrimary
                 textColor = android.R.color.white
                 setOnValueChangeListener {
@@ -117,7 +116,7 @@ override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             descriptor {
                 backgroundColor = R.color.colorPrimaryDark
                 description = "Enabling this option will improve your social skills."
-                textColor =  R.color.colorSecondary
+                textColor = R.color.colorSecondary
             }
         }
 }
@@ -128,14 +127,13 @@ And then with a little bit of fantasy you can go on and customize your preferenc
 ```kotlin
 myShouldSetScreen.build {
 
-            backgroundColor = R.color.colorPrimaryDark
-
             categoryTitle {
                 title = "Social Skills"
-                textColor =  R.color.colorSecondary
+                textColor = R.color.colorSecondary
+                backgroundColor = R.color.colorPrimaryDark
             }
 
-            checkBoxPreference("areGreetingsHappening") {
+           checkBoxPreference("areGreetingsHappening") {
                 backgroundColor = R.color.colorPrimary
                 textColor = android.R.color.white
                 setOnValueChangeListener {
@@ -148,10 +146,10 @@ myShouldSetScreen.build {
             descriptor {
                 backgroundColor = R.color.colorPrimaryDark
                 description = "Enabling this option will improve your social skills."
-                textColor =  R.color.colorSecondary
+                textColor = R.color.colorSecondary
             }
-            
-            bottomMultiple{
+
+            bottomRadioGroupPreference {
                 keyLabelPair = hashMapOf(
                     "isSomething" to "Something",
                     "isMagic" to "Magic",
@@ -169,7 +167,7 @@ myShouldSetScreen.build {
 
             categoryTitle {
                 title = "Items"
-                textColor =  R.color.colorSecondary
+                textColor = R.color.colorSecondary
             }
 
             switchPreference("isSwitched") {
@@ -182,7 +180,7 @@ myShouldSetScreen.build {
                 color = R.color.colorPrimaryDark
             }
 
-            bottomSingle("magic_kind", "duperMagic") {
+            bottomCheckBoxGroupPreference("magic_kind", "duperMagic") {
                 backgroundColor = R.color.colorPrimary
                 textColor = android.R.color.white
                 title = "Magic kind"
@@ -200,7 +198,7 @@ myShouldSetScreen.build {
             descriptor {
                 backgroundColor = R.color.colorPrimaryDark
                 description = "Select the magic kind you prefer in order to do some magic."
-                textColor =  R.color.colorSecondary
+                textColor = R.color.colorSecondary
             }
         }
 ```

@@ -5,19 +5,17 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import com.cristian.shouldset.PreferenceConfigurator
 import com.cristian.shouldset.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class ShouldSetScreen : LinearLayout {
 
-
     private lateinit var mLayout: LinearLayout
-    private var mPreferences: MutableList<ShouldSetView>? = null
     private lateinit var bottomSheetLayout: LinearLayout
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
-    private val multipleList = mutableListOf<ShouldSetBottomMultiple>()
-    private val singleList = mutableListOf<ShouldSetBottomSingle>()
     private lateinit var mTrimLayout: FrameLayout
+    private lateinit var mPreferenceConfigurator: PreferenceConfigurator
 
     constructor(context: Context) : super(context) {
         initView(context)
@@ -39,8 +37,7 @@ class ShouldSetScreen : LinearLayout {
             }
         }
 
-
-    fun initView(context: Context) {
+    private fun initView(context: Context) {
         inflate(context, R.layout.shouldset_preference_screen, this)
         mLayout = findViewById(R.id.shouldSetScreenLayout)
         mTrimLayout = findViewById(R.id.trimLayout)
@@ -48,6 +45,7 @@ class ShouldSetScreen : LinearLayout {
         bottomSheetLayout = findViewById(R.id.bottomSheet)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        mPreferenceConfigurator = PreferenceConfigurator(context, this)
         configureBottomSheetBehavior()
         mTrimLayout.setOnClickListener {
             closeBottomSheetDialog()
@@ -77,11 +75,53 @@ class ShouldSetScreen : LinearLayout {
         })
     }
 
-    fun build(builder: ShouldSetScreen.() -> Unit) {
-        this.builder()
+    /**
+     * This method use the kotlin DSL to build the ShouldSetScreen content.
+     *
+     * Usage example:
+     *```kotlin
+     *  myShouldSetScreen.configure {
+     *    checkBoxPreference("isChecked") {
+     *      title = "Check me"
+     *    }
+     *  }
+     * ```
+     */
+    fun configure(resetView: Boolean = false, builder: PreferenceConfigurator.() -> View) {
+        if (resetView) mLayout.removeAllViews()
+        val items = mPreferenceConfigurator.builder()
+        when(items) {
+            is ShouldSetBottomCheckBoxGroupPreference -> addBottomCheckBoxGroupPreference(items)
+            is ShouldSetBottomRadioGroupPreference -> addBottomRadioGroupPreference(items)
+        }
     }
 
-    fun openBottomSheetDialogForMultiple(preference: ShouldSetBottomMultiple) {
+    fun addItem(view: View) {
+        mLayout.addView(view)
+        when(view) {
+            is ShouldSetBottomCheckBoxGroupPreference -> addBottomCheckBoxGroupPreference(view)
+            is ShouldSetBottomRadioGroupPreference -> addBottomRadioGroupPreference(view)
+        }
+    }
+
+    fun addItemList(viewListClosure: () -> List<View>) {
+        viewListClosure.invoke().forEach {
+            addItem(it)
+            when(it) {
+                is ShouldSetBottomCheckBoxGroupPreference -> addBottomCheckBoxGroupPreference(it)
+                is ShouldSetBottomRadioGroupPreference -> addBottomRadioGroupPreference(it)
+            }
+        }
+
+    }
+
+    fun addItemList(itemList: List<View>) {
+        itemList.forEach {
+            addItem(it)
+        }
+    }
+
+    private fun openBottomSheetDialogForCheckBoxGroup(preference: ShouldSetBottomCheckBoxGroupPreference) {
         bottomSheetLayout.removeAllViews()
 
         preference.keyLabelPair?.keys?.forEach {
@@ -100,7 +140,7 @@ class ShouldSetScreen : LinearLayout {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
-    private fun openBottomSheetDialogForSingle(preference: ShouldSetBottomSingle) {
+    private fun openBottomSheetDialogForRadioGroup(preference: ShouldSetBottomRadioGroupPreference) {
         bottomSheetLayout.removeAllViews()
         bottomSheetLayout.addView(preference.radioButtonGroupPreference, 0)
         mTrimLayout.visibility = View.VISIBLE
@@ -108,15 +148,14 @@ class ShouldSetScreen : LinearLayout {
 
     }
 
-    fun closeBottomSheetDialog() {
+    private fun closeBottomSheetDialog() {
         mTrimLayout.visibility = View.GONE
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
-    fun addMultipleBottom(bottomMultiple: ShouldSetBottomMultiple) {
-        multipleList.add(bottomMultiple)
-        bottomMultiple.setOnSelectedListener {
-            openBottomSheetDialogForMultiple(bottomMultiple)
+    private fun addBottomRadioGroupPreference(preference: ShouldSetBottomRadioGroupPreference) {
+        preference.setOnSelectedListener {
+            openBottomSheetDialogForRadioGroup(preference)
         }
     }
 
@@ -124,68 +163,9 @@ class ShouldSetScreen : LinearLayout {
         mTrimLayout.animate().alpha((0.5F * percentage) / 100).duration = 0
     }
 
-    fun addSingleBottom(single: ShouldSetBottomSingle) {
-        singleList.add(single)
-        single.setOnSelectedListener {
-            openBottomSheetDialogForSingle(single)
+    private fun addBottomCheckBoxGroupPreference(preference: ShouldSetBottomCheckBoxGroupPreference) {
+        preference.setOnSelectedListener {
+            openBottomSheetDialogForCheckBoxGroup(preference)
         }
-    }
-
-    fun categoryTitle(action: (ShouldSetCategory.() -> Unit)) {
-        val category = ShouldSetCategory(context)
-        category.action()
-        mLayout.addView(category)
-    }
-
-    fun descriptor(action: (ShouldSetDescriptor.() -> Unit)) {
-        val descriptor = ShouldSetDescriptor(context)
-        descriptor.action()
-        mLayout.addView(descriptor)
-    }
-
-    fun checkBoxPreference(key: String, action: (ShouldSetCheckBoxPreference.() -> Unit)) {
-        val checkbox = ShouldSetCheckBoxPreference(key, context)
-        checkbox.action()
-        mLayout.addView(checkbox)
-    }
-
-    fun bottomMultiple(action: (ShouldSetBottomMultiple.() -> Unit)) {
-        val multiple = ShouldSetBottomMultiple(context)
-        multiple.action()
-        mLayout.addView(multiple)
-        addMultipleBottom(multiple)
-
-    }
-
-    fun bottomSingle(key: String, defaultValueKey: String, action: (ShouldSetBottomSingle.() -> Unit)) {
-        val single = ShouldSetBottomSingle(key, defaultValueKey, context)
-        single.action()
-        mLayout.addView(single)
-        addSingleBottom(single)
-    }
-
-    //TODO: Add generic for support boolean values
-    fun radioGroup(key: String, defaultValueKey: String, action: (ShouldSetRadioGroupPreference.() -> Unit)) {
-        val single = ShouldSetRadioGroupPreference(key, defaultValueKey, context)
-        single.action()
-        mLayout.addView(single)
-    }
-
-    fun dividerLine(action: (ShouldSetDividerLine.() -> Unit)) {
-        val divider = ShouldSetDividerLine(context)
-        divider.action()
-        mLayout.addView(divider)
-    }
-
-    fun dividerSpace(action: (ShouldSetDividerSpace.() -> Unit)) {
-        val divider = ShouldSetDividerSpace(context)
-        divider.action()
-        mLayout.addView(divider)
-    }
-
-    fun switchPreference(key: String, action: (ShouldSetSwitchPreference.() -> Unit)) {
-        val switch = ShouldSetSwitchPreference(key, context)
-        switch.action()
-        mLayout.addView(switch)
     }
 }

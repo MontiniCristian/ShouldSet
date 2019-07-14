@@ -7,23 +7,23 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.cristian.shouldset.R
 
-class ShouldSetCategory : LinearLayout, ShouldSetView {
+open class ShouldSetCategory : LinearLayout {
 
     private var mTitleTextView: TextView? = null
 
-    var backgroundColor: Int? = null
+    open var backgroundColor: Int? = null
         set(value) {
             field = value
-            if (value != null) mTitleTextView?.background = resources.getDrawable(value, context.theme)
+            if (value != null) this.background = resources.getDrawable(value, context.theme)
         }
 
-    var title: String? = null
+    open var title: String? = null
         set(value) {
             mTitleTextView?.text = value
             field = value
         }
 
-    var textColor: Int? = null
+    open var textColor: Int? = null
         set(value) {
             field = value
             if (value != null) mTitleTextView?.setTextColor(resources.getColor(value, context.theme))
@@ -45,7 +45,10 @@ class ShouldSetCategory : LinearLayout, ShouldSetView {
 
     private fun onInit() {
         View.inflate(context, R.layout.shouldset_preference_category, this)
+        this.background = resources.getDrawable(backgroundColor ?: android.R.color.transparent, context.theme)
         mTitleTextView = findViewById<TextView>(R.id.shouldSetCategoryTitle)
+        mTitleTextView?.text = title
+
     }
 
 }

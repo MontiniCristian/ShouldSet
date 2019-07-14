@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.cristian.shouldset.R
 
-class ShouldSetDescriptor : LinearLayout, ShouldSetView {
+class ShouldSetDescriptor : LinearLayout {
 
     private lateinit var mShouldSetDescriptorContentTextView: TextView
 
