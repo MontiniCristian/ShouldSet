@@ -41,7 +41,9 @@ object ShouldManager {
     fun getStringAsBehaviorSubject(key: String, defValue: String): BehaviorSubject<String> {
         if (mStringPreferenceList[key] == null) {
             mStringPreferenceList[key] = BehaviorSubject.create()
-            mStringPreferenceList[key]?.onNext(mSharedPreferenceManager.getString(key, defValue))
+            mSharedPreferenceManager.getString(key, defValue)?.let {
+                mStringPreferenceList[key]?.onNext(it)
+            }
         }
 
         return mStringPreferenceList[key]!!
@@ -92,7 +94,9 @@ object ShouldManager {
             val subscription = mBooleanPreferenceList[key]?.subscribe {
                 mSharedPreferenceManager.edit().putBoolean(key, value).apply()
             }
-            compositeDisposable.add(subscription)
+            subscription?.apply {
+                compositeDisposable.add(this)
+            }
         }
 
         mBooleanPreferenceList[key]?.onNext(value)
@@ -107,7 +111,10 @@ object ShouldManager {
             val subscription = mStringPreferenceList[key]?.subscribe {
                 mSharedPreferenceManager.edit().putString(key, value).apply()
             }
-            compositeDisposable.add(subscription)
+            subscription?.apply {
+                compositeDisposable.add(this)
+            }
+
         }
 
         mStringPreferenceList[key]?.onNext(value)
@@ -122,7 +129,9 @@ object ShouldManager {
             val subscription = mIntPreferenceList[key]?.subscribe {
                 mSharedPreferenceManager.edit().putInt(key, value).apply()
             }
-            compositeDisposable.add(subscription)
+            subscription?.apply {
+                compositeDisposable.add(this)
+            }
         }
 
         mIntPreferenceList[key]?.onNext(value)
@@ -137,7 +146,9 @@ object ShouldManager {
             val subscription = mFloatPreferenceList[key]?.subscribe {
                 mSharedPreferenceManager.edit().putFloat(key, value).apply()
             }
-            compositeDisposable.add(subscription)
+            subscription?.apply {
+                compositeDisposable.add(this)
+            }
         }
 
         mFloatPreferenceList[key]?.onNext(value)
@@ -152,7 +163,9 @@ object ShouldManager {
             val subscription = mFloatPreferenceList[key]?.subscribe {
                 mSharedPreferenceManager.edit().putLong(key, value).apply()
             }
-            compositeDisposable.add(subscription)
+            subscription?.apply {
+                compositeDisposable.add(this)
+            }
         }
 
         mLongPreferenceList[key]?.onNext(value)
