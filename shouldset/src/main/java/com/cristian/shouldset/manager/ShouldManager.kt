@@ -1,8 +1,6 @@
 package com.cristian.shouldset.manager
 
-import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
 
@@ -12,15 +10,17 @@ object ShouldManager {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     private val mStringPreferenceList: MutableMap<String, BehaviorSubject<String>> = mutableMapOf()
-    private val mBooleanPreferenceList: MutableMap<String, BehaviorSubject<Boolean>> = mutableMapOf()
+    private val mBooleanPreferenceList: MutableMap<String, BehaviorSubject<Boolean>> =
+        mutableMapOf()
     private val mIntPreferenceList: MutableMap<String, BehaviorSubject<Int>> = mutableMapOf()
     private val mFloatPreferenceList: MutableMap<String, BehaviorSubject<Float>> = mutableMapOf()
     private val mLongPreferenceList: MutableMap<String, BehaviorSubject<Long>> = mutableMapOf()
 
 
     // TODO: throw an exception when ShouldManager has not been initialized
-    fun init(context: Context) {
-        mSharedPreferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
+    fun init(sharedPreferences: SharedPreferences) {
+        mSharedPreferenceManager = sharedPreferences
+
     }
 
     /**
@@ -41,7 +41,9 @@ object ShouldManager {
     fun getStringAsBehaviorSubject(key: String, defValue: String): BehaviorSubject<String> {
         if (mStringPreferenceList[key] == null) {
             mStringPreferenceList[key] = BehaviorSubject.create()
-            mStringPreferenceList[key]?.onNext(mSharedPreferenceManager.getString(key, defValue))
+            mSharedPreferenceManager.getString(key, defValue)?.apply {
+                mStringPreferenceList[key]?.onNext(this)
+            }
         }
 
         return mStringPreferenceList[key]!!
@@ -92,7 +94,9 @@ object ShouldManager {
             val subscription = mBooleanPreferenceList[key]?.subscribe {
                 mSharedPreferenceManager.edit().putBoolean(key, value).apply()
             }
-            compositeDisposable.add(subscription)
+            subscription?.apply {
+                compositeDisposable.add(this)
+            }
         }
 
         mBooleanPreferenceList[key]?.onNext(value)
@@ -107,7 +111,9 @@ object ShouldManager {
             val subscription = mStringPreferenceList[key]?.subscribe {
                 mSharedPreferenceManager.edit().putString(key, value).apply()
             }
-            compositeDisposable.add(subscription)
+            subscription?.apply {
+                compositeDisposable.add(this)
+            }
         }
 
         mStringPreferenceList[key]?.onNext(value)
@@ -122,7 +128,9 @@ object ShouldManager {
             val subscription = mIntPreferenceList[key]?.subscribe {
                 mSharedPreferenceManager.edit().putInt(key, value).apply()
             }
-            compositeDisposable.add(subscription)
+            subscription?.apply {
+                compositeDisposable.add(this)
+            }
         }
 
         mIntPreferenceList[key]?.onNext(value)
@@ -137,7 +145,9 @@ object ShouldManager {
             val subscription = mFloatPreferenceList[key]?.subscribe {
                 mSharedPreferenceManager.edit().putFloat(key, value).apply()
             }
-            compositeDisposable.add(subscription)
+            subscription?.apply {
+                compositeDisposable.add(this)
+            }
         }
 
         mFloatPreferenceList[key]?.onNext(value)
@@ -152,7 +162,9 @@ object ShouldManager {
             val subscription = mFloatPreferenceList[key]?.subscribe {
                 mSharedPreferenceManager.edit().putLong(key, value).apply()
             }
-            compositeDisposable.add(subscription)
+            subscription?.apply {
+                compositeDisposable.add(this)
+            }
         }
 
         mLongPreferenceList[key]?.onNext(value)
